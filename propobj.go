@@ -6,9 +6,6 @@ import (
 	"time"
 )
 
-//import "io"
-//import "io/ioutil"
-
 type MiniProp struct {
 	prop map[string]interface{}
 }
@@ -131,4 +128,13 @@ func (obj *MiniProp) ToJson() []byte {
 		return []byte("{}")
 	}
 	return v
+}
+
+func (obj *MiniProp) ToJsonFromCategory(category string) []byte {
+	v := obj.GetProps(category, make(map[string]interface{}))
+	vv, e := json.Marshal(v)
+	if e != nil {
+		return []byte("{}")
+	}
+	return vv
 }
