@@ -11,6 +11,8 @@ func TestKey(t *testing.T) {
 	if 1 != propObj.GetPropInt("d", "b", 1) {
 		t.Error("s")
 	}
+	//
+	//
 	propObj = NewMiniPropFromJson(propObj.ToJson())
 	if 1 != propObj.GetPropInt("d", "b", 1) {
 		t.Error("s")
