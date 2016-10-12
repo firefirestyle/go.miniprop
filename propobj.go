@@ -1,8 +1,10 @@
 package gominiprop
 
-import "encoding/json"
-
-import "encoding/base64"
+import (
+	"encoding/base64"
+	"encoding/json"
+	"time"
+)
 
 //import "io"
 //import "io/ioutil"
@@ -86,6 +88,15 @@ func (obj *MiniProp) GetPropBytes(category string, key string, defaultValue []by
 	return defaultValue
 }
 
+func (obj *MiniProp) GetPropTime(category string, key string, defaultValue time.Time) time.Time {
+	v := obj.GetProp(category, key, defaultValue)
+	switch v.(type) {
+	case float64:
+		return time.Unix(0, int64(v.(float64)))
+	}
+	return defaultValue
+}
+
 func (obj *MiniProp) SetProp(category string, key string, value interface{}) {
 	v := obj.prop[category]
 	if v == nil {
@@ -108,6 +119,10 @@ func (obj *MiniProp) SetPropString(category string, key string, value string) {
 
 func (obj *MiniProp) SetPropBytes(category string, key string, value []byte) {
 	obj.SetProp(category, key, base64.StdEncoding.EncodeToString([]byte(value)))
+}
+
+func (obj *MiniProp) SetPropTime(category string, key string, value time.Time) {
+	obj.SetProp(category, key, value.UnixNano())
 }
 
 func (obj *MiniProp) ToJson() []byte {
