@@ -2,6 +2,11 @@ package gominiprop
 
 import "encoding/json"
 
+import "encoding/base64"
+
+//import "io"
+//import "io/ioutil"
+
 type MiniProp struct {
 	prop map[string]interface{}
 }
@@ -49,12 +54,34 @@ func (obj *MiniProp) GetPropInt(category string, key string, defaultValue int) i
 	}
 	return defaultValue
 }
+func (obj *MiniProp) GetPropFloat64(category string, key string, defaultValue float64) float64 {
+	v := obj.GetProp(category, key, defaultValue)
+	switch v.(type) {
+	case float64:
+		return obj.GetProp(category, key, defaultValue).(float64)
+	}
+	return defaultValue
+}
 
 func (obj *MiniProp) GetPropString(category string, key string, defaultValue string) string {
 	v := obj.GetProp(category, key, defaultValue)
 	switch v.(type) {
 	case string:
 		return obj.GetProp(category, key, defaultValue).(string)
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) GetPropBytes(category string, key string, defaultValue []byte) []byte {
+	v := obj.GetProp(category, key, defaultValue)
+	switch v.(type) {
+	case string:
+		va, er := base64.StdEncoding.DecodeString(v.(string))
+		if er == nil {
+			return va
+		} else {
+			return defaultValue
+		}
 	}
 	return defaultValue
 }
@@ -71,8 +98,16 @@ func (obj *MiniProp) SetPropInt(category string, key string, value int) {
 	obj.SetProp(category, key, value)
 }
 
+func (obj *MiniProp) SetPropFloat(category string, key string, value float64) {
+	obj.SetProp(category, key, value)
+}
+
 func (obj *MiniProp) SetPropString(category string, key string, value string) {
 	obj.SetProp(category, key, value)
+}
+
+func (obj *MiniProp) SetPropBytes(category string, key string, value []byte) {
+	obj.SetProp(category, key, base64.StdEncoding.EncodeToString([]byte(value)))
 }
 
 func (obj *MiniProp) ToJson() []byte {
