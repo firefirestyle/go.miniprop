@@ -6,10 +6,16 @@ type MiniProp struct {
 	prop map[string]interface{}
 }
 
-func NewMiniProp(source []byte) *MiniProp {
+func NewMiniPropFromJson(source []byte) *MiniProp {
 	propObj := new(MiniProp)
 	propObj.prop = make(map[string]interface{})
 	json.Unmarshal(source, &propObj.prop)
+	return propObj
+}
+
+func NewMiniProp() *MiniProp {
+	propObj := new(MiniProp)
+	propObj.prop = make(map[string]interface{})
 	return propObj
 }
 
