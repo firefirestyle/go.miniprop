@@ -1,4 +1,4 @@
-package gominiprop
+package miniprop
 
 import (
 	"encoding/base64"
@@ -53,6 +53,7 @@ func (obj *MiniProp) GetPropInt(category string, key string, defaultValue int) i
 	}
 	return defaultValue
 }
+
 func (obj *MiniProp) GetPropFloat64(category string, key string, defaultValue float64) float64 {
 	v := obj.GetProp(category, key, defaultValue)
 	switch v.(type) {

@@ -1,4 +1,4 @@
-package gominiprop
+package miniprop
 
 import (
 	"bytes"
