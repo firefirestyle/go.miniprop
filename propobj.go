@@ -17,6 +17,12 @@ func NewMiniPropFromJson(source []byte) *MiniProp {
 	return propObj
 }
 
+func NewMiniPropFromMap(source map[string]interface{}) *MiniProp {
+	propObj := new(MiniProp)
+	propObj.prop = source
+	return propObj
+}
+
 func NewMiniProp() *MiniProp {
 	propObj := new(MiniProp)
 	propObj.prop = make(map[string]interface{})
@@ -138,4 +144,88 @@ func (obj *MiniProp) ToJsonFromCategory(category string) []byte {
 		return []byte("{}")
 	}
 	return vv
+}
+
+//
+//
+//
+
+func (obj *MiniProp) GetString(key string, defaultValue string) string {
+	v := obj.prop[key]
+	if v == nil {
+		return defaultValue
+	}
+	switch v.(type) {
+	case string:
+		return v.(string)
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) SetString(key string, value string) {
+	obj.prop[key] = value
+}
+
+func (obj *MiniProp) GetBool(key string, defaultValue bool) bool {
+	v := obj.prop[key]
+	if v == nil {
+		return defaultValue
+	}
+	switch v.(type) {
+	case bool:
+		return v.(bool)
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) SetBool(key string, value bool) {
+	obj.prop[key] = value
+}
+
+func (obj *MiniProp) GetInt(key string, defaultValue int) int {
+	v := obj.prop[key]
+	if v == nil {
+		return defaultValue
+	}
+	switch v.(type) {
+	case float64:
+		return int(v.(float64))
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) SetInt(key string, value int) {
+	obj.prop[key] = value
+}
+
+func (obj *MiniProp) GetFloat(key string, defaultValue float64) float64 {
+	v := obj.prop[key]
+	if v == nil {
+		return defaultValue
+	}
+	switch v.(type) {
+	case float64:
+		return v.(float64)
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) SetFloatString(key string, value float64) {
+	obj.prop[key] = value
+}
+
+func (obj *MiniProp) GetTime(key string, defaultValue time.Time) time.Time {
+	v := obj.prop[key]
+	if v == nil {
+		return defaultValue
+	}
+	switch v.(type) {
+	case float64:
+		return time.Unix(0, int64(v.(float64)))
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) SetTime(key string, defaultValue time.Time) {
+	obj.prop[key] = defaultValue.UnixNano()
 }
