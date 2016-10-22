@@ -30,23 +30,36 @@ func NewMiniProp() *MiniProp {
 }
 
 func (obj *MiniProp) GetProps(category string, defaultValue interface{}) interface{} {
-	v := obj.prop[category]
-	if v == nil {
-		return defaultValue
+	if category == "" {
+		return obj.prop
 	} else {
-		return v
+		v := obj.prop[category]
+		if v == nil {
+			return defaultValue
+		} else {
+			return v
+		}
 	}
 }
 
 func (obj *MiniProp) GetProp(category string, key string, defaultValue interface{}) interface{} {
-	v := obj.prop[category]
-	if v == nil {
-		return defaultValue
+	if category == "" {
+		v := obj.prop[key]
+		if v == nil {
+			return defaultValue
+		} else {
+			return v
+		}
+	} else {
+		v := obj.prop[category]
+		if v == nil {
+			return defaultValue
+		}
+		if obj.prop[category].(map[string]interface{})[key] == nil {
+			return defaultValue
+		}
+		return obj.prop[category].(map[string]interface{})[key]
 	}
-	if obj.prop[category].(map[string]interface{})[key] == nil {
-		return defaultValue
-	}
-	return obj.prop[category].(map[string]interface{})[key]
 }
 
 func (obj *MiniProp) GetPropInt(category string, key string, defaultValue int) int {
@@ -102,11 +115,15 @@ func (obj *MiniProp) GetPropTime(category string, key string, defaultValue time.
 }
 
 func (obj *MiniProp) SetProp(category string, key string, value interface{}) {
-	v := obj.prop[category]
-	if v == nil {
-		obj.prop[category] = make(map[string]interface{})
+	if category == "" {
+		obj.prop[key] = value
+	} else {
+		v := obj.prop[category]
+		if v == nil {
+			obj.prop[category] = make(map[string]interface{})
+		}
+		obj.prop[category].(map[string]interface{})[key] = value
 	}
-	obj.prop[category].(map[string]interface{})[key] = value
 }
 
 func (obj *MiniProp) SetPropInt(category string, key string, value int) {
