@@ -219,3 +219,105 @@ func (obj *MiniProp) GetTime(key string, defaultValue time.Time) time.Time {
 func (obj *MiniProp) SetTime(key string, value time.Time) {
 	obj.SetPropTime("", key, value)
 }
+
+//
+//
+//
+func (obj *MiniProp) SetPropStringList(category string, key string, value []string) {
+	obj.SetProp(category, key, value)
+}
+func (obj *MiniProp) SetPropIntList(category string, key string, value []int) {
+	obj.SetProp(category, key, value)
+}
+
+func (obj *MiniProp) SetPropBoolList(category string, key string, value []bool) {
+	obj.SetProp(category, key, value)
+}
+
+func (obj *MiniProp) GetPropStringList(category string, key string, defaultValue []string) []string {
+	v := obj.GetProp(category, key, defaultValue)
+	switch v.(type) {
+	case []string:
+		return v.([]string)
+	case []interface{}:
+		vs := v.([]interface{})
+		ret := make([]string, 0)
+		for _, vv := range vs {
+			switch vv.(type) {
+			case string:
+				ret = append(ret, vv.(string))
+			default:
+				return defaultValue
+			}
+		}
+		return ret
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) GetPropFloatList(category string, key string, defaultValue []float64) []float64 {
+	v := obj.GetProp(category, key, defaultValue)
+	switch v.(type) {
+	case []float64:
+		return v.([]float64)
+	case []interface{}:
+		vs := v.([]interface{})
+		ret := make([]float64, 0)
+		for _, vv := range vs {
+			switch vv.(type) {
+			case float64:
+				ret = append(ret, vv.(float64))
+			default:
+				return defaultValue
+			}
+		}
+		return ret
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) GetPropBoolList(category string, key string, defaultValue []bool) []bool {
+	v := obj.GetProp(category, key, defaultValue)
+	switch v.(type) {
+	case []bool:
+		return v.([]bool)
+	case []interface{}:
+		vs := v.([]interface{})
+		ret := make([]bool, 0)
+		for _, vv := range vs {
+			switch vv.(type) {
+			case bool:
+				ret = append(ret, vv.(bool))
+			default:
+				return defaultValue
+			}
+		}
+		return ret
+	}
+	return defaultValue
+}
+
+func (obj *MiniProp) GetPropIntList(category string, key string, defaultValue []int) []int {
+	v := obj.GetProp(category, key, defaultValue)
+	switch v.(type) {
+	case []int:
+		return v.([]int)
+	case []interface{}:
+		{
+			vs := v.([]interface{})
+			ret := make([]int, 0)
+			for _, vv := range vs {
+				switch vv.(type) {
+				case int:
+					ret = append(ret, vv.(int))
+				case float64:
+					ret = append(ret, int(vv.(float64)))
+				default:
+					return defaultValue
+				}
+			}
+			return ret
+		}
+	}
+	return defaultValue
+}

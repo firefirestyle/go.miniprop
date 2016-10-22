@@ -175,3 +175,19 @@ func TestBytes(t *testing.T) {
 		t.Error("TestBytes3")
 	}
 }
+
+func TestStringList(t *testing.T) {
+	propObj := NewMiniProp()
+	propObj.SetPropStringList("test", "a", []string{"1", "2", "3"})
+	ret := propObj.GetPropStringList("test", "a", []string{"1", "1", "1"})
+	if !(ret[0] == "1" && ret[1] == "2" && ret[2] == "3") {
+		t.Error("TestBytes3")
+	}
+	propObj = NewMiniPropFromJson(propObj.ToJson())
+	ret = propObj.GetPropStringList("test", "a", []string{"1", "1", "1"})
+	//	t.Log(">>>>>" + len(ret1))
+	if !(ret[0] == "1" && ret[1] == "2" && ret[2] == "3") {
+		t.Error("TestBytes4" + string(propObj.ToJson()) + ":")
+	}
+
+}
