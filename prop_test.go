@@ -20,6 +20,53 @@ func TestKey(t *testing.T) {
 	}
 }
 
+func TestOne(t *testing.T) {
+	propObj := NewMiniProp()
+	propObj.SetBool("a", true)
+	propObj.SetInt("b", 1)
+	propObj.SetString("c", "test")
+
+	if true != propObj.GetBool("a", false) {
+		t.Error("s")
+	}
+	if 1 != propObj.GetInt("b", 0) {
+		t.Error("s")
+	}
+	if "test" != propObj.GetString("c", "") {
+		t.Error("s")
+	}
+	if "{\"a\":true,\"b\":1,\"c\":\"test\"}" != string(propObj.ToJson()) {
+		t.Error("s")
+	}
+}
+
+func TestBool(t *testing.T) {
+	propObj := NewMiniProp()
+	propObj.SetPropBool("test", "a", false)
+	propObj.SetPropString("test", "c", "test")
+	if false != propObj.GetPropBool("test", "a", true) {
+		t.Error("s")
+	}
+	if 1 != propObj.GetPropInt("test", "b", 1) {
+		t.Error("s")
+	}
+	if 1 != propObj.GetPropInt("test", "c", 1) {
+		t.Error("s")
+	}
+	//
+	//
+	propObj = NewMiniPropFromJson(propObj.ToJson())
+	if false != propObj.GetPropBool("test", "a", true) {
+		t.Error("s")
+	}
+	if 1 != propObj.GetPropInt("test", "b", 1) {
+		t.Error("s")
+	}
+	if 1 != propObj.GetPropInt("test", "c", 1) {
+		t.Error("s")
+	}
+}
+
 func TestInt(t *testing.T) {
 	propObj := NewMiniProp()
 	propObj.SetPropInt("test", "a", 3)

@@ -62,6 +62,15 @@ func (obj *MiniProp) GetProp(category string, key string, defaultValue interface
 	}
 }
 
+func (obj *MiniProp) GetPropBool(category string, key string, defaultValue bool) bool {
+	v := obj.GetProp(category, key, defaultValue)
+	switch v.(type) {
+	case bool:
+		return obj.GetProp(category, key, defaultValue).(bool)
+	}
+	return defaultValue
+}
+
 func (obj *MiniProp) GetPropInt(category string, key string, defaultValue int) int {
 	v := obj.GetProp(category, key, defaultValue)
 	switch v.(type) {
@@ -126,6 +135,10 @@ func (obj *MiniProp) SetProp(category string, key string, value interface{}) {
 	}
 }
 
+func (obj *MiniProp) SetPropBool(category string, key string, value bool) {
+	obj.SetProp(category, key, value)
+}
+
 func (obj *MiniProp) SetPropInt(category string, key string, value int) {
 	obj.SetProp(category, key, value)
 }
@@ -168,81 +181,41 @@ func (obj *MiniProp) ToJsonFromCategory(category string) []byte {
 //
 
 func (obj *MiniProp) GetString(key string, defaultValue string) string {
-	v := obj.prop[key]
-	if v == nil {
-		return defaultValue
-	}
-	switch v.(type) {
-	case string:
-		return v.(string)
-	}
-	return defaultValue
+	return obj.GetPropString("", key, defaultValue)
 }
 
 func (obj *MiniProp) SetString(key string, value string) {
-	obj.prop[key] = value
+	obj.SetPropString("", key, value)
 }
 
 func (obj *MiniProp) GetBool(key string, defaultValue bool) bool {
-	v := obj.prop[key]
-	if v == nil {
-		return defaultValue
-	}
-	switch v.(type) {
-	case bool:
-		return v.(bool)
-	}
-	return defaultValue
+	return obj.GetPropBool("", key, defaultValue)
 }
 
 func (obj *MiniProp) SetBool(key string, value bool) {
-	obj.prop[key] = value
+	obj.SetPropBool("", key, value)
 }
 
 func (obj *MiniProp) GetInt(key string, defaultValue int) int {
-	v := obj.prop[key]
-	if v == nil {
-		return defaultValue
-	}
-	switch v.(type) {
-	case float64:
-		return int(v.(float64))
-	}
-	return defaultValue
+	return obj.GetPropInt("", key, defaultValue)
 }
 
 func (obj *MiniProp) SetInt(key string, value int) {
-	obj.prop[key] = value
+	obj.SetPropInt("", key, value)
 }
 
 func (obj *MiniProp) GetFloat(key string, defaultValue float64) float64 {
-	v := obj.prop[key]
-	if v == nil {
-		return defaultValue
-	}
-	switch v.(type) {
-	case float64:
-		return v.(float64)
-	}
-	return defaultValue
+	return obj.GetPropFloat64("", key, defaultValue)
 }
 
 func (obj *MiniProp) SetFloatString(key string, value float64) {
-	obj.prop[key] = value
+	obj.SetPropFloat("", key, value)
 }
 
 func (obj *MiniProp) GetTime(key string, defaultValue time.Time) time.Time {
-	v := obj.prop[key]
-	if v == nil {
-		return defaultValue
-	}
-	switch v.(type) {
-	case float64:
-		return time.Unix(0, int64(v.(float64)))
-	}
-	return defaultValue
+	return obj.GetPropTime("", key, defaultValue)
 }
 
-func (obj *MiniProp) SetTime(key string, defaultValue time.Time) {
-	obj.prop[key] = defaultValue.UnixNano()
+func (obj *MiniProp) SetTime(key string, value time.Time) {
+	obj.SetPropTime("", key, value)
 }
