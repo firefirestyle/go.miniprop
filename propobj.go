@@ -176,10 +176,9 @@ func (obj *MiniProp) ToJsonFromCategory(category string) []byte {
 	return vv
 }
 
-//
-//
-//
-
+// ---
+// Single
+// ---
 func (obj *MiniProp) GetString(key string, defaultValue string) string {
 	return obj.GetPropString("", key, defaultValue)
 }
@@ -220,9 +219,9 @@ func (obj *MiniProp) SetTime(key string, value time.Time) {
 	obj.SetPropTime("", key, value)
 }
 
-//
-//
-//
+// ---
+// List
+// ---
 func (obj *MiniProp) SetPropStringList(category string, key string, value []string) {
 	obj.SetProp(category, key, value)
 }
@@ -320,4 +319,54 @@ func (obj *MiniProp) GetPropIntList(category string, key string, defaultValue []
 		}
 	}
 	return defaultValue
+}
+
+// ---
+// Double
+// ---
+func (obj *MiniProp) AddPropListItem(category string, key string, value interface{}) {
+	v := obj.GetProp(category, key, nil)
+	if v == nil {
+		v = make([]interface{}, 0)
+	}
+
+	switch v.(type) {
+	case []interface{}:
+	default:
+		v = make([]interface{}, 0)
+	}
+	v = append(v.([]interface{}), value)
+	obj.SetProp(category, key, value)
+}
+
+func (obj *MiniProp) GetLengthPropListItem(category string, key string) int {
+	v := obj.GetProp(category, key, nil)
+	if v == nil {
+		return 0
+	}
+
+	switch v.(type) {
+	case []interface{}:
+		return len(v.([]interface{}))
+	default:
+		return 0
+	}
+}
+
+func (obj *MiniProp) GetPropListItem(category string, key string, index int, defaultValue interface{}) interface{} {
+	v := obj.GetProp(category, key, nil)
+	if v == nil {
+		return defaultValue
+	}
+
+	switch v.(type) {
+	case []interface{}:
+		if index < len(v.([]interface{})) {
+			return v.([]interface{})[index]
+		} else {
+			return defaultValue
+		}
+	default:
+		return defaultValue
+	}
 }
