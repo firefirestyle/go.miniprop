@@ -13,6 +13,9 @@ type MiniProp struct {
 func NewMiniPropFromJson(source []byte) *MiniProp {
 	propObj := new(MiniProp)
 	propObj.prop = make(map[string]interface{})
+	if source == nil {
+		source = make([]byte, 0)
+	}
 	json.Unmarshal(source, &propObj.prop)
 	return propObj
 }
@@ -252,6 +255,12 @@ func (obj *MiniProp) GetPropStringList(category string, key string, defaultValue
 		return ret
 	}
 	return defaultValue
+}
+
+func (obj *MiniProp) GetPropStringList2String(category string, key string, defaultValue []string) string {
+	ret := obj.GetPropStringList(category, key, defaultValue)
+	v, _ := json.Marshal(ret)
+	return string(v)
 }
 
 func (obj *MiniProp) GetPropFloatList(category string, key string, defaultValue []float64) []float64 {
