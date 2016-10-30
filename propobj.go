@@ -170,6 +170,10 @@ func (obj *MiniProp) ToJson() []byte {
 	return v
 }
 
+func (obj *MiniProp) ToMap() map[string]interface{} {
+	return obj.prop
+}
+
 func (obj *MiniProp) ToJsonFromCategory(category string) []byte {
 	v := obj.GetProps(category, make(map[string]interface{}))
 	vv, e := json.Marshal(v)
