@@ -3,11 +3,18 @@ package miniprop
 import (
 	"encoding/base64"
 	"encoding/json"
+	"io"
+	"io/ioutil"
 	"time"
 )
 
 type MiniProp struct {
 	prop map[string]interface{}
+}
+
+func NewMiniPropFromJsonReader(r io.Reader) *MiniProp {
+	bytes, _ := ioutil.ReadAll(r)
+	return NewMiniPropFromJson(bytes)
 }
 
 func NewMiniPropFromJson(source []byte) *MiniProp {
