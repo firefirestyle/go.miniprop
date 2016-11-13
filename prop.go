@@ -239,7 +239,12 @@ func (obj *MiniProp) SetTime(key string, value time.Time) {
 func (obj *MiniProp) SetPropStringList(category string, key string, value []string) {
 	obj.SetProp(category, key, value)
 }
+
 func (obj *MiniProp) SetPropIntList(category string, key string, value []int) {
+	obj.SetProp(category, key, value)
+}
+
+func (obj *MiniProp) SetPropFloatList(category string, key string, value []float64) {
 	obj.SetProp(category, key, value)
 }
 
@@ -266,12 +271,6 @@ func (obj *MiniProp) GetPropStringList(category string, key string, defaultValue
 		return ret
 	}
 	return defaultValue
-}
-
-func (obj *MiniProp) GetPropStringList2String(category string, key string, defaultValue []string) string {
-	ret := obj.GetPropStringList(category, key, defaultValue)
-	v, _ := json.Marshal(ret)
-	return string(v)
 }
 
 func (obj *MiniProp) GetPropFloatList(category string, key string, defaultValue []float64) []float64 {
